@@ -9,28 +9,72 @@
 
     });
 
-	// assets/js/custom.js
-document.addEventListener('DOMContentLoaded', function() {
-	var modal = document.getElementById("loginModal");
-	var btn = document.querySelector(".nav li a[href='']");
-	var span = document.getElementsByClassName("close")[0];
-  
-	btn.onclick = function(event) {
-	  event.preventDefault();
-	  modal.style.display = "block";
-	}
-  
-	span.onclick = function() {
-	  modal.style.display = "none";
-	}
-  
-	window.onclick = function(event) {
-	  if (event.target == modal) {
-		modal.style.display = "none";
-	  }
-	}
-  });
+	$(window).on('load', function() {
+        $('#js-preloader').addClass('loaded');
+    });
 
+    document.addEventListener('DOMContentLoaded', function() {
+        var loginModal = document.getElementById("loginModal");
+        var signupModal = document.getElementById("signupModal");
+        var loginBtn = document.querySelector(".nav li a[href='']");
+        var closeBtns = document.getElementsByClassName("close");
+
+        loginBtn.onclick = function(event) {
+            event.preventDefault();
+            closeSignupModal(); // Fecha o modal "Cadastrar-se" se estiver aberto
+            loginModal.style.display = "block";
+        }
+
+        for (var i = 0; i < closeBtns.length; i++) {
+            closeBtns[i].onclick = function() {
+                closeLoginModal();
+                closeSignupModal();
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == loginModal) {
+                closeLoginModal();
+            }
+            if (event.target == signupModal) {
+                closeSignupModal();
+            }
+        }
+
+        function openSignupModal() {
+            closeLoginModal(); // Fecha o modal "Entrar" se estiver aberto
+            signupModal.style.display = 'block';
+        }
+
+        function closeSignupModal() {
+            signupModal.style.display = 'none';
+        }
+
+        function closeLoginModal() {
+            loginModal.style.display = 'none';
+        }
+
+        document.getElementById('cadastrar').addEventListener('click', function(event) {
+            event.preventDefault();
+            openSignupModal();
+        });
+
+        document.querySelector('.sign-up-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            openSignupModal();
+        });
+
+        document.querySelector('#signupModal .close').addEventListener('click', function() {
+            closeSignupModal();
+        });
+
+        // Adiciona evento de clique ao link "Entre aqui" no modal "Cadastrar-se"
+        document.querySelector('#signupModal .sign-up-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            closeSignupModal();
+            loginModal.style.display = 'block';
+        });
+    });
 
 	$(window).scroll(function() {
 	  var scroll = $(window).scrollTop();
@@ -77,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	}
 
-
+	
 	$('.owl-banner').owlCarousel({
 		center: true,
       items:1,
